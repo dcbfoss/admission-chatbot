@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Chat bOT</title>
+<meta charset="UTF-8">
+</head>
+<body>
+
+<style>
+#chat-title{
+	padding:1vw;
+	color:#fff;
+}
+#chat-user-area{
+	background-color: #79c;
+	height:10vh;
+}
+.chat-box{
+	width:100%;
+	background-color: #79c;
+}
+.chat-box .textarea{
+	width:85vw;
+	border:1px solid #050;
+	background:#fff;
+	height:10vh;
+}
+.chat-box .textarea:focus{
+	background-color:#efe;
+}
+.chat-send-button{
+	background-color:#050;
+	color:#fff;
+	border:1px solid #050;
+	width:10vw;
+	height:10vh;
+	margin-left:0px;
+}
+.chat-answer{
+	width:99%;
+	background-color:#79c;
+	color:#000;
+}
+#chat-answer{
+	width:100%;
+	height:50vh;
+	resize:none;
+}
+</style>
+<div class="chat-box" id="chat-box">
+<div id="chat-title">Admission Chat Box</div>
+<div class="chat-answer">
+<center><textarea id="chat-answer" readonly></textarea></center>
+</div>
+<div id="chat-user-area">
+<input class="textarea" type="text" placeholder="type something..." id="chat-query">
+<button class="chat-send-button" id="chat-send" onclick="sendmessage()">Send</button>
+</div>
+</div>
+
+
+<script>
+
+var patt = {
+    "Achuthsankar":["Prof. Achuthsankar S. Nair \n Professor & Head  Department of Computational Biology, University of Kerala, You can explore more here \n\nhttps://sites.google.com/site/centreforbioinformatics/about/profiles/dr-achuthsankar-s-nair?authuser=0 \n Contact Details:\nEmail: sankar.achuth@gmail.com\nContact Number: 9446928759"],
+    "oommen":["Prof. OOmmen V. OOmmen \n Professor Emeritus Department of Computational Biology, University of Kerala \nContact Details: \nEmail: anant.ram@gla.ac.in \nContact Number: 9456009465"],
+    "sudhakaran":["Prof. Sudhakaran P. R. \nProfessor Emeritus Department of Computational Biology, University of Kerala, you can explore more here \n\nhttps://sites.google.com/site/centreforbioinformatics/about/profiles/dr-p-r-sudhakaran?authuser=0 \nContact Details:\nEmail:prslab@gmail.com \nContact Number: 9847332514"],
+    "sunitha":["Dr. Sunitha P. \n Lecturer, Department of Computational Biology and Bioinformatics, ou can explore more here \n\nhttps://sites.google.com/site/centreforbioinformatics/about/profiles/sunitha-p?authuser=0 \nContact Details:\nEmail: sunifeb12@gmail.com, Y \nContact Number: 9927064019"],
+    "shanitha":["Ms. Shanitha P. \n Lecturer, Department of Computational Biology and Bioinformatics, \n\nhttps://sites.google.com/site/centreforbioinformatics/about/people/shanitha-a?authuser=0  \nContact Details:\nEmail: shanitha2002shaji@gmail.com \nContact Number: 9997077388"],
+    "biji":[" Dr. Biji C.L. \nLecturer, Department of Computational Biology and Bioinformatics, you can explore more \n\nhttps://sites.google.com/site/centreforbioinformatics/about/profiles/biji-c-l?authuser=0 \nContact Details: \nEmail: bijijomy@gmail.com, \nContact Number: 9446171877"],
+    "rani":["Dr. Rani J. R. \n Lecturer, Department of Computational Biology and Bioinformatics ,\n\nhttps://sites.google.com/site/centreforbioinformatics/about/profiles/rani-j-r?authuser=0  \nContact Details: Email:ranijr@gmail.com  \nContact Number: 9746386539"],
+    "admission" :["First you need to get yourself registered for the online entrance test of University of Kerala .Laste date for application:30th June Please visit here- \n\nhttps://admissions.keralauniversity.ac.in/css2021/ "],
+    "admission procedure" :["First you need to get yourself registered for the online entrance test of University of Kerala .Laste date for application:30th June Please visit here- \n\nhttps://admissions.keralauniversity.ac.in/css2021/. There are three specialisation in MSc Computational Biology programme.You can opt for any one to be part of our family. You would be given your  result (qualified or not) soon after completing the exam.After qualifying the test one can deposit the fees Rs.800/-, ."],
+    "develop" :["the developers of this admission chatbot are:  \n Biji C.L.\n Vinod P\n Achuthsankar S. Nair " ],
+    "bot" :["the developers of this admission chatbot are:  \n Biji C.L.\n Vinod P\n Achuthsankar S. Nair " ],
+    "faculty":["faculty details: Whom you want to know more about from our elite group of faculties-Prof. Sudhakaran, Prof. Oommen V. Oommen, Prof. Achuthsankar S. Nair, Ms. Shanitha A., Dr. Sunitha P., Dr. Biji C. L., Dr. Rani J. R " ],
+    "syllabus":["The syllabus of entrance exam  can be found here"],
+    "eligibility":["Machine Learning:\n Bachelors in Computer Science, Electronics, Mathematics, Physics, Physics wih Computer Applications, Physics and Computer Applications Physics with Machine Learning, BCA, B. VOC Software Development, Bioinformatics, Statistics, and BTech any branch including Biotechnology & Bioinformatics.\n NGS Data Analytics:\n Bachelors in Bioinformatics, Computer Science, Physics & Computer Applications, Biochemistry, Chemistry, Microbiology, Industrial Microbiology, Biochemistry and Industrial Microbiology, Botany and Biotechnology, Biotechnology and allied areas, BTech (Biotechnology, Bioinformatics, Biochemical Engineering)\n Computer Aided Drug Design:\n Bachelors in Bioinformatics, Biochemistry, Chemistry, Polymer Chemistry, Microbiology, Industrial Microbiology, Biochemistry and Industrial Microbiology,  otany and Biotechnology, Biotechnology and allied areas, including BTech Biotechnology, Bioinformatics, Biochemical Engineering"],
+    "entrance":["Don't worry, I am sure you will clear the entrance, please practise based on sample QP available here"],
+    "eligible":["Please type eligibility"],
+    "carrier":["Placement @ Scigenome Pvt Ltd, Agrigenome Pvt Ltd, Acqubits , Sequoia and many more "],
+    "skill":["Dear Learner, you will be thorughly trained to get advanced skills in Python, Machine learning, Data analytics and computer aided drug discovery based on specialisation"],
+    "specialisation":["We offer Msc Computational Biology Programme with specialisation in Machine Learning, NGS Data analysis, CADD"],
+    "how are you":["its all good","i am doing well"],
+    "hi":["Hey","Hello","Hello, how could i help you"],
+    "hey":["Hey","Hello","Hello, how could i help you"]
+
+};
+var bot_responses = {
+   
+    "Hi":["Hey","Hello","Hello, how could i help you"],
+    "Hii":["Hey","Hello","Hello, how could i help you"],
+    "hi":["Hey","Hello","Hello, how could i help you"],
+    "Hello":["Hey","Hello","Hello, how could i help you"],
+    "hello":["Hey","Hello","Hello, how could i help you"],
+    "Hey":["Hey","Hello","Hello, how could i help you"],
+    "thank":["Happy that i helped you, tell me what more you want to know, To quit type bye"],
+    "thanks":["Happy that i helped you, tell me what more you want to know, To quit type bye"],
+    "thank you":["Happy that i helped you, tell me what more you want to know, To quit type bye"],
+    "hey":["Hey","Hello","Hello, how could i help you"],
+    "how are you":["i am fine","i am doing well"],
+    "bye":["it was nice talking to you"],
+    "admission procedure" :[" First you need to get yourself registered for the online entrance test of University of Kerala .Laste date for application:30th June Please visit here- \n\nhttps://admissions.keralauniversity.ac.in/css2021/"],
+   
+
+    "default": [" try 'admission procedure'",
+                "try 'about Prof. Achuthsankar S. Nair' ",
+                "try 'about Prof. OOmmen V. OOmmen'",
+                "try 'about Prof. P.R. Sudhakaran'",
+                "try 'who are the developers of this bot'"],
+               
+    "keywordmiss":[ "retry i can't understand ","i am here to solve your problems related to admission procedure",
+               "i can tell you about admission procedure"]
+    };
+document.addEventListener("DOMContentLoaded", () => {
+    const inputField = document.getElementById("chat-query")
+    inputField.addEventListener("keydown", function(e) {
+        if (e.code === "Enter") {
+            sendmessage();
+    }
+  });
+});
+function random(arr){
+	return arr[Math.floor(Math.random() * arr.length)];
+}
+function create_bot_response(message){
+	for (var pattern in bot_responses){
+		if (message.toLowerCase().includes(pattern.toLowerCase())){
+			var result = random(bot_responses[pattern]);
+			return result;
+		}
+		if (pattern.toLowerCase().includes(message.toLowerCase())){
+			var result = random(bot_responses[pattern]);
+			return result;
+		}
+}
+return random(bot_responses["default"]);
+}
+function keywordsplitter(message){
+	var keywords = message.split(" ");
+	if (message===""){return "Please type something in the box.\n"+random(bot_responses["default"]);}
+	var words = [];
+	var output = "";
+	for (var i=0; i<keywords.length;i++){
+		for (var pattern in patt){
+			if (keywords[i].toLowerCase().includes(pattern.toLowerCase())){
+				if (!(words.includes(pattern))){
+				words.push(pattern);
+				}
+			}
+			if (pattern.toLowerCase().includes(keywords[i].toLowerCase())){
+				if (!(words.includes(pattern))){
+				words.push(pattern);
+				}
+			}
+		}
+	}
+	for (var i=0;i<words.length;i++){
+		if (!(output.includes(random(patt[words[i]])))){
+		output = random(patt[words[i]])+"\n" + output;}
+	}
+	return output;
+}
+function match_rule(message){
+	var output = keywordsplitter(message);
+	if (!(output==="")){
+		return output;
+	}
+	return create_bot_response(message);
+}
+function get_chat_response(message){
+	return match_rule(message);
+}
+function sendmessage(){
+document.getElementById("chat-answer").innerHTML = get_chat_response(document.getElementById("chat-query").value);
+}
+</script>
+
+
+</body>
+</html>
